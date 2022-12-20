@@ -1,9 +1,8 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.firefox.options import Options
 
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,10 +12,10 @@ import pytest
 
 @pytest.fixture
 def browser():
-    s = Service(ChromeDriverManager().install())
+    s = Service(GeckoDriverManager().install())
     options = Options()
     options.headless = True
-    driver = webdriver.Chrome(service=s, options=options)
+    driver = webdriver.Firefox(service=s, options=options)
     driver.maximize_window()
     yield driver
     driver.close()
