@@ -6,6 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+
 def test_selenium():
     s = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=s)
@@ -15,3 +16,9 @@ def test_selenium():
     driver.find_element(By.NAME, 'q').send_keys('28 USD to CLP')
     wait.until(EC.element_to_be_clickable((By.NAME, 'btnK')))
     driver.find_element(By.NAME, 'btnK').click()
+
+    assert len(driver.find_elements(By.ID, 'knowledge-currency__updatable-chart-column')) == 0
+    driver.close()
+
+
+test_selenium()
