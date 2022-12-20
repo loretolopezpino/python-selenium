@@ -3,15 +3,15 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 
-import time
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-s = Service(ChromeDriverManager().install())
-driver = webdriver.Chrome(service=s)
-driver.maximize_window()
-driver.get("https://www.google.cl")
-
-#Código
-driver.find_element(By.NAME, 'q')
-
-time.sleep(10)
-driver.close()
+def test_selenium():
+    s = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=s)
+    wait = WebDriverWait(driver, 20)
+    driver.maximize_window()
+    driver.get("https://www.google.cl")
+    driver.find_element(By.NAME, 'q').send_keys('28 USD to CLP')
+    wait.until(EC.element_to_be_clickable((By.NAME, 'btnK')))
+    driver.find_element(By.NAME, 'btnK').click()
