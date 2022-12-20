@@ -6,19 +6,24 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+import pytest
 
-def test_selenium():
+
+@pytest.fixture
+def browser():
     s = Service(ChromeDriverManager().install())
     driver = webdriver.Chrome(service=s)
-    wait = WebDriverWait(driver, 20)
     driver.maximize_window()
-    driver.get("https://www.google.cl")
-    driver.find_element(By.NAME, 'q').send_keys('28 USD to CLP')
-    wait.until(EC.element_to_be_clickable((By.NAME, 'btnK')))
-    driver.find_element(By.NAME, 'btnK').click()
-
-    assert len(driver.find_elements(By.ID, 'knowledge-currency__updatable-chart-column')) == 0
+    yield driver
     driver.close()
 
 
-test_selenium()
+def test_selenium(browser):
+    wait = WebDriverWait(browser, 20)
+    browser.maximize_window()
+    browser.get("https://www.google.cl")
+    browser.find_element(By.NAME, 'q').send_keys('28 USD to CLP')
+    wait.until(EC.element_to_be_clickable((By.NAME, 'btnK')))
+    browser.find_element(By.NAME, 'btnK').click()
+
+    assert len(browser.find_elements(By.ID, 'knowledge-currency__updatable-chart-column')) == 0
